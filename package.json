@@ -1,0 +1,41 @@
+{
+  "name": "oes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --exec babel-node index.js --presets @babel/preset-env"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EliasNegasa/OES.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EliasNegasa/OES/issues"
+  },
+  "homepage": "https://github.com/EliasNegasa/OES#readme",
+  "dependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.4",
+    "@babel/node": "^7.20.7",
+    "@babel/preset-env": "^7.21.4",
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "nodemon": "^2.0.22",
+    "pg": "^8.10.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.31.0"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "*.js"
+    ],
+    "exec": "babel-node index.js --presets @babel/preset-env"
+  }
+}
