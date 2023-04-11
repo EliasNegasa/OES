@@ -1,14 +1,7 @@
 import config from "../config/db";
 import Sequelize from "sequelize";
-import user from "./user";
-import role from "./role";
-import course from "./course";
-import enrollment from "./enrollments";
-import exam from "./exam";
-import question from "./question";
-import answer from "./answer";
 
-const sequelize = new Sequelize(config.DB, config.HOST, config.PASSWORD, {
+const sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
   host: config.HOST,
   dialect: config.dialect,
   operatorsAliases: false,
@@ -26,18 +19,14 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-const db = {
-  user: user(sequelize, Sequelize),
-  role: role(sequelize, Sequelize),
-  course: course(sequelize, Sequelize),
-  enrollment: enrollment(sequelize, Sequelize),
-  exam: exam(sequelize, Sequelize),
-  question: question(sequelize, Sequelize),
-  answer: answer(sequelize, Sequelize),
-};
-
-// db.user = require("../models/user")(sequelize, Sequelize);
-// db.role = require("../models/role")(sequelize, Sequelize);
+db.user = require("../models/user")(sequelize, Sequelize);
+db.role = require("../models/role")(sequelize, Sequelize);
+db.course = require("../models/course")(sequelize, Sequelize);
+db.enrollment = require("../models/enrollment")(sequelize, Sequelize);
+db.exam = require("../models/exam")(sequelize, Sequelize);
+db.question = require("../models/question")(sequelize, Sequelize);
+db.answer = require("../models/answer")(sequelize, Sequelize);
+db.result = require("../models/result")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
@@ -82,5 +71,13 @@ db.question.belongsTo(db.exam, { foreignKey: "exam_id" });
 db.question.hasMany(db.answer, { foreignKey: "question_id" });
 
 db.answer.belongsTo(db.question, { foreignKey: "question_id" });
+
+db.result.belongsTo(db.enrollment, { foreignKey: "enrollment_id" });
+
+db.enrollment.belongsTo(db.result, { foreignKey: "enrollment_id" });
+
+db.exam.hasMany(db.result, { foreignKey: "exam_id" });
+
+db.result.belongsTo(db.exam, { foreignKey: "exam_id" });
 
 module.exports = db;
