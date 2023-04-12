@@ -30,24 +30,28 @@ db.result = require("../models/result")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
+  // as: "user",
   foreignKey: "roleId",
   otherKey: "userId",
 });
 
 db.user.belongsToMany(db.role, {
   through: "user_roles",
+  // as: "role",
   foreignKey: "userId",
   otherKey: "roleId",
 });
 
 db.course.belongsToMany(db.user, {
   through: "course_users",
+  // as: "user",
   foreignKey: "course_id",
   otherKey: "user_id",
 });
 
 db.user.belongsToMany(db.course, {
   through: "course_users",
+  // as: "course",
   foreignKey: "user_id",
   otherKey: "course_id",
 });
@@ -72,12 +76,14 @@ db.question.hasMany(db.answer, { foreignKey: "question_id" });
 
 db.answer.belongsTo(db.question, { foreignKey: "question_id" });
 
-db.result.belongsTo(db.enrollment, { foreignKey: "enrollment_id" });
+db.enrollment.hasOne(db.result, { foreignKey: "enrollment_id" });
 
-db.enrollment.belongsTo(db.result, { foreignKey: "enrollment_id" });
+db.result.belongsTo(db.enrollment, { foreignKey: "enrollment_id" });
 
 db.exam.hasMany(db.result, { foreignKey: "exam_id" });
 
 db.result.belongsTo(db.exam, { foreignKey: "exam_id" });
+
+db.ROLES = ["admin", "student", "lecturer"];
 
 module.exports = db;

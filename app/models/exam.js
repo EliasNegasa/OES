@@ -1,24 +1,26 @@
 module.exports = (sequelize, Sequelize) => {
   const Exam = sequelize.define("exams", {
-    id: {
-      type: Sequelize.INTEGER,
-      primaryKey: true,
-    },
     exam_name: {
       type: Sequelize.STRING,
       allowNull: false,
     },
     duration_minutes: {
-      type: Sequelize.STRING,
+      type: Sequelize.FLOAT,
       allowNull: false,
     },
     exam_start: {
-      type: Sequelize.STRING,
+      type: Sequelize.DATE,
       allowNull: false,
+      validate: {
+        isDate: true,
+      },
     },
     exam_end: {
-      type: Sequelize.STRING,
+      type: Sequelize.DATE,
       allowNull: false,
+      validate: {
+        isDate: true,
+      },
     },
   });
 
