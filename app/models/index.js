@@ -31,15 +31,15 @@ db.result = require("../models/result")(sequelize, Sequelize);
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   // as: "user",
-  foreignKey: "roleId",
-  otherKey: "userId",
+  foreignKey: "role_id",
+  otherKey: "user_id",
 });
 
 db.user.belongsToMany(db.role, {
   through: "user_roles",
   // as: "role",
-  foreignKey: "userId",
-  otherKey: "roleId",
+  foreignKey: "user_id",
+  otherKey: "role_id",
 });
 
 db.course.belongsToMany(db.user, {

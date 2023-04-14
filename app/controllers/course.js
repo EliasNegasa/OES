@@ -16,7 +16,7 @@ const getCourses = async (req, res) => {
 
 const getCourseById = async (req, res) => {
   try {
-    const course = await Course.findByPk(req.params.id);
+    const course = await Course.findByPk(req.params.id, { include: [User] });
     course == null
       ? res.status(404).json({ message: "Course not found" })
       : res.json(course);
