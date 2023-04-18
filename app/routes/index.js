@@ -9,16 +9,6 @@ import resultRouter from "./result";
 
 const router = Router();
 
-// const resources = ["/users", "/courses", "/exams"];
-
-// const validateResource = (req, res, next) => {
-//   const url = req.originalUrl;
-//   console.log("URL", req.originalUrl);
-//   if (url.find(resources))
-
-//   next();
-// };
-
 router.use("/users", userRouter);
 router.use("/courses", courseRouter);
 router.use("/enrollments", enrollmentRouter);

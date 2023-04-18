@@ -3,6 +3,8 @@ import cors from "cors";
 import db from "./app/models";
 const Role = db.role;
 import router from "./app/routes";
+import authRouter from "./app/routes/auth";
+import auth from "./app/middleware/authenticate";
 
 const app = express();
 
@@ -16,8 +18,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.use("/auth", authRouter);
-app.use("/api", router);
+app.use("/auth", authRouter);
+app.use("/api", auth.verifyToken, router);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

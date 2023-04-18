@@ -1,4 +1,5 @@
 import db from "../models";
+import encryptPassword from "../utils/encryptPassword";
 
 const User = db.user;
 const Role = db.role;
@@ -30,7 +31,10 @@ const getUserById = async (req, res) => {
 
 const createUser = async (req, res) => {
   try {
-    const user = await User.create(req.body);
+    let { body } = req;
+    body.password = encryptPassword(body.password);
+
+    const user = await User.create(body);
 
     const { roles, courses } = req.body;
 
@@ -58,9 +62,13 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
+
+    let { body } = req;
+    body.password = encryptPassword(body.password);
+
     const { roles, courses } = req.body;
 
-    const [updated, user] = await User.update(req.body, {
+    const [updated, user] = await User.update(body, {
       where: { id },
       returning: true,
     });
