@@ -5,6 +5,8 @@ const Role = db.role;
 import router from "./app/routes";
 import authRouter from "./app/routes/auth";
 import auth from "./app/middleware/authenticate";
+import morgan from "morgan";
+import helmet from "helmet";
 
 const app = express();
 
@@ -14,6 +16,8 @@ const app = express();
 // });
 
 app.use(cors());
+app.use(morgan("common"));
+app.use(helmet());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
