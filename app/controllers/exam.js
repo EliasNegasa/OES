@@ -2,10 +2,11 @@ import db from "../models";
 
 const Exam = db.exam;
 const Course = db.course;
+const Question = db.question;
 
 const getExams = async (req, res) => {
   try {
-    const exam = await Exam.findAll({ include: Course });
+    const exam = await Exam.findAll({ include: [Course, Question] });
 
     res.json(exam);
   } catch (error) {
@@ -16,7 +17,9 @@ const getExams = async (req, res) => {
 
 const getExamById = async (req, res) => {
   try {
-    const exam = await Exam.findByPk(req.params.id, { include: Course });
+    const exam = await Exam.findByPk(req.params.id, {
+      include: [Course, Question],
+    });
     exam == null
       ? res.status(404).json({ message: "Exam not found" })
       : res.json(exam);
