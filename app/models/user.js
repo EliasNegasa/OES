@@ -26,6 +26,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.INTEGER,
       allowNull: false,
     },
+    isActive: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
   });
 
   return User;

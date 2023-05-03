@@ -1,5 +1,7 @@
+import _ from "lodash";
 import db from "../models";
 import encryptPassword from "../utils/encryptPassword";
+import generatePassword from "../utils/generatePassword";
 
 const User = db.user;
 const Role = db.role;
@@ -32,16 +34,23 @@ const getUserById = async (req, res) => {
 const createUser = async (req, res) => {
   try {
     let { body } = req;
-    body.password = encryptPassword(body.password);
+    let _generatedPassword = generatePassword(body.firstname);
+    body.password
+      ? (body.password = encryptPassword(body.password))
+      : (body.password = encryptPassword(_generatedPassword));
+    // body.password = encryptPassword(_generatedPassword);
 
     const user = await User.create(body);
 
     const { roles, courses } = req.body;
-
     if (roles) {
-      roles.forEach(async (id) => {
-        const role = await Role.findOne({ where: { id } });
-        role && (await user.addRole(role));
+      roles.forEach(async (role) => {
+        if (_.lowerCase(role.role_name) == "student") role.id = 1;
+        if (_.lowerCase(role.role_name) == "admin") role.id = 2;
+        if (_.lowerCase(role.role_name) == "lecturer") role.id = 3;
+        console.log("Role", role.id);
+        const _role = await Role.findOne({ where: { id: role.id } });
+        _role && (await user.addRole(role.id));
       });
     }
 
