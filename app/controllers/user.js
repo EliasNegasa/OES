@@ -73,7 +73,7 @@ const updateUser = async (req, res) => {
     const { id } = req.params;
 
     let { body } = req;
-    body.password = encryptPassword(body.password);
+    // body.password = encryptPassword(body.password);
 
     const { roles, courses } = req.body;
 
