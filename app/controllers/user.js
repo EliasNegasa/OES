@@ -6,10 +6,14 @@ import generatePassword from "../utils/generatePassword";
 const User = db.user;
 const Role = db.role;
 const Course = db.course;
+const Enrollment = db.enrollment;
 
 const getUsers = async (req, res) => {
   try {
-    const user = await User.findAll({ include: [Role, Course] });
+    const user = await User.findAll({
+      include: [Role, Course],
+      order: [["createdAt", "ASC"]],
+    });
     res.json(user);
   } catch (error) {
     console.error(error);
@@ -20,7 +24,7 @@ const getUsers = async (req, res) => {
 const getUserById = async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id, {
-      include: [Role, Course],
+      include: [Role, Course, Enrollment],
     });
     user == null
       ? res.status(404).json({ message: "User not found" })
@@ -34,7 +38,7 @@ const getUserById = async (req, res) => {
 const createUser = async (req, res) => {
   try {
     let { body } = req;
-    let _generatedPassword = generatePassword(body.firstname);
+    let _generatedPassword = generatePassword(body.firstname, body.lastname);
     body.password
       ? (body.password = encryptPassword(body.password))
       : (body.password = encryptPassword(_generatedPassword));
@@ -55,9 +59,10 @@ const createUser = async (req, res) => {
     }
 
     if (courses) {
-      courses.forEach(async (id) => {
-        const course = await Course.findOne({ where: { id } });
-        course && (await user.addCourse(course));
+      courses.forEach(async (course) => {
+        console.log("COURSE", course);
+        const _course = await Course.findOne({ where: { id: course.id } });
+        _course && (await user.addCourse(course.id));
       });
     }
 
@@ -75,28 +80,48 @@ const updateUser = async (req, res) => {
     let { body } = req;
     // body.password = encryptPassword(body.password);
 
-    const { roles, courses } = req.body;
-
-    const [updated, user] = await User.update(body, {
+    const [updated] = await User.update(body, {
       where: { id },
       returning: true,
     });
 
-    // const roleInstances = await Role.findAll({
-    //   where: {
-    //     id: roles,
-    //   },
-    // });
+    const user = await User.findByPk(id);
 
-    // const courseInstances = await Course.findAll({
-    //   where: {
-    //     id: courses,
-    //   },
-    // });
+    console.log("UPDATED: ", updated);
+    console.log("USER: ", user);
 
-    // await user.setRoles(roleInstances);
+    const { roles, courses, enrollments } = req.body;
+    if (roles) {
+      roles.forEach(async (role) => {
+        if (_.lowerCase(role.role_name) == "student") role.id = 1;
+        if (_.lowerCase(role.role_name) == "admin") role.id = 2;
+        if (_.lowerCase(role.role_name) == "lecturer") role.id = 3;
+        console.log("Role", role.id);
+        const _role = await Role.findOne({ where: { id: role.id } });
+        _role && (await user.addRole(role.id));
+      });
+    }
 
-    // await user.seCourses(courseInstances);
+    if (courses) {
+      courses.forEach(async (course) => {
+        console.log("COURSE", course);
+        const _course = await Course.findOne({ where: { id: course.id } });
+        _course && (await user.addCourse(course.id));
+      });
+    }
+
+    if (enrollments) {
+      enrollments.forEach(async (enrollment) => {
+        console.log("ENROLL", enrollment);
+        enrollment.id
+          ? user.addEnrollment(
+              await Enrollment.findOne({
+                where: { id: enrollment.id },
+              })
+            )
+          : user.addEnrollment(await Enrollment.create(enrollment));
+      });
+    }
 
     updated === 1
       ? res.json({ message: "User updated successfully" })

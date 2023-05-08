@@ -17,7 +17,9 @@ const getEnrollments = async (req, res) => {
 
 const getEnrollmentById = async (req, res) => {
   try {
-    const enrollment = await Enrollment.findByPk(req.params.id);
+    const enrollment = await Enrollment.findByPk(req.params.id, {
+      include: [User, Course],
+    });
     enrollment == null
       ? res.status(404).json({ message: "Enrollment not found" })
       : res.json(enrollment);

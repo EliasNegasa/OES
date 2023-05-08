@@ -7,6 +7,9 @@ module.exports = (sequelize, Sequelize) => {
     course_code: {
       type: Sequelize.STRING,
     },
+    // course_desciption: {
+    //   type: Sequelize.STRING,
+    // },
     course_year: {
       type: Sequelize.INTEGER,
     },

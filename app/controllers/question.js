@@ -31,7 +31,7 @@ const getQuestionById = async (req, res) => {
 
 const createQuestion = async (req, res) => {
   try {
-    const question = await Question.create(req.body);
+    const question = await Question.create(req.body, { include: [Answer] });
     res.json(question);
   } catch (error) {
     console.error(error);
