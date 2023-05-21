@@ -14,4 +14,6 @@ router
   .put(enrollmentController.updateEnrollment)
   .delete(enrollmentController.deleteEnrollment);
 
+router.route("/search").get(enrollmentController.getEnrollmentsByQuery);
+
 export default router;

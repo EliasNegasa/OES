@@ -70,6 +70,8 @@ db.exam.belongsTo(db.course, { foreignKey: "course_id" });
 
 db.exam.hasMany(db.question, { foreignKey: "exam_id" });
 
+db.exam.hasMany(db.enrollment, { foreignKey: "exam_id" });
+
 db.question.belongsTo(db.exam, { foreignKey: "exam_id" });
 
 db.question.hasMany(db.answer, { foreignKey: "question_id" });
@@ -77,6 +79,8 @@ db.question.hasMany(db.answer, { foreignKey: "question_id" });
 db.answer.belongsTo(db.question, { foreignKey: "question_id" });
 
 db.enrollment.hasOne(db.result, { foreignKey: "enrollment_id" });
+
+db.enrollment.hasOne(db.exam, { foreignKey: "enrollment_id" });
 
 db.result.belongsTo(db.enrollment, { foreignKey: "enrollment_id" });
 

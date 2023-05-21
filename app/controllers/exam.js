@@ -56,6 +56,24 @@ const updateExam = async (req, res) => {
   }
 };
 
+const getExamByQuery = async (req, res) => {
+  try {
+    const query = req.query;
+
+    console.log("QQ", query);
+
+    const exam = await Exam.findAll({
+      where: query,
+      include: { model: Course, model: Question, include: Answer },
+      eager: true,
+    });
+
+    res.send(exam);
+  } catch (error) {
+    return res.status(500).json({ message: `Internal server error: ${error}` });
+  }
+};
+
 const deleteExam = (req, res) => {
   console.log("DELETE COURSE");
 };
@@ -63,6 +81,7 @@ const deleteExam = (req, res) => {
 module.exports = {
   getExamById,
   getExams,
+  getExamByQuery,
   createExam,
   updateExam,
   deleteExam,

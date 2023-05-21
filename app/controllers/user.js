@@ -131,6 +131,24 @@ const updateUser = async (req, res) => {
   }
 };
 
+const getUsersByQuery = async (req, res) => {
+  try {
+    const query = req.query;
+
+    console.log("QQ", query);
+
+    const users = await User.findAll({
+      where: query,
+      include: [Role, Course, Enrollment],
+      eager: true,
+    });
+
+    res.send(users);
+  } catch (error) {
+    return res.status(500).json({ message: `Internal server error: ${error}` });
+  }
+};
+
 const deleteUser = (req, res) => {
   console.log("DELETE COURSE");
 };
@@ -140,5 +158,6 @@ module.exports = {
   getUserById,
   createUser,
   updateUser,
+  getUsersByQuery,
   deleteUser,
 };

@@ -3,6 +3,7 @@ import db from "../models";
 const Enrollment = db.enrollment;
 const User = db.user;
 const Course = db.course;
+const Exam = db.exam;
 
 const getEnrollments = async (req, res) => {
   try {
@@ -55,6 +56,25 @@ const updateEnrollment = async (req, res) => {
   }
 };
 
+const getEnrollmentsByQuery = async (req, res) => {
+  try {
+    const query = req.query;
+
+    console.log("QQ", query);
+
+    const enrollments = await Enrollment.findAll({
+      where: query,
+      include: { model: User, model: Course, include: Exam },
+      // include: {model: User, model: Course, } [User, Course],
+      eager: true,
+    });
+
+    res.send(enrollments);
+  } catch (error) {
+    return res.status(500).json({ message: `Internal server error: ${error}` });
+  }
+};
+
 const deleteEnrollment = (req, res) => {
   console.log("DELETE Enrollment");
 };
@@ -64,5 +84,6 @@ module.exports = {
   getEnrollmentById,
   createEnrollment,
   updateEnrollment,
+  getEnrollmentsByQuery,
   deleteEnrollment,
 };

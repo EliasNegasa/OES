@@ -11,4 +11,6 @@ router
   .put(examController.updateExam)
   .delete(examController.deleteExam);
 
+router.route("/search").get(examController.getExamByQuery);
+
 export default router;
