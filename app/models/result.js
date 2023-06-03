@@ -3,6 +3,9 @@ module.exports = (sequelize, Sequelize) => {
     score: {
       type: Sequelize.FLOAT,
     },
+    status: {
+      type: Sequelize.STRING,
+    },
   });
   return Result;
 };

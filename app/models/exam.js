@@ -22,6 +22,9 @@ module.exports = (sequelize, Sequelize) => {
         isDate: true,
       },
     },
+    status: {
+      type: Sequelize.STRING,
+    },
   });
 
   return Exam;

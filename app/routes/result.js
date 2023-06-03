@@ -14,4 +14,6 @@ router
   .put(resultController.updateResult)
   .delete(resultController.deleteResult);
 
+router.route("/search").get(resultController.getResultsByQuery);
+
 export default router;

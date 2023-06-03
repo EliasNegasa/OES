@@ -58,6 +58,24 @@ const updateResult = async (req, res) => {
   }
 };
 
+const getResultsByQuery = async (req, res) => {
+  try {
+    const query = req.query;
+
+    console.log("QQ", query);
+
+    const result = await Result.findAll({
+      where: query,
+      include: { model: Exam, model: Enrollment, include: User },
+      eager: true,
+    });
+
+    res.send(result);
+  } catch (error) {
+    return res.status(500).json({ message: `Internal server error: ${error}` });
+  }
+};
+
 const deleteResult = (req, res) => {
   console.log("DELETE Result");
 };
@@ -65,6 +83,7 @@ const deleteResult = (req, res) => {
 module.exports = {
   getResultById,
   getResults,
+  getResultsByQuery,
   createResult,
   updateResult,
   deleteResult,

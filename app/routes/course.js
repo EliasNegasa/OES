@@ -14,4 +14,7 @@ router
   .put(courseController.updateCourse)
   .delete(courseController.deleteCourse);
 
+  router.route("/search").get(courseController.getCoursesByQuery);
+
+
 export default router;

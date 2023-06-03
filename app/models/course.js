@@ -13,6 +13,9 @@ module.exports = (sequelize, Sequelize) => {
     course_year: {
       type: Sequelize.INTEGER,
     },
+    status: {
+      type: Sequelize.STRING,
+    },
   });
 
   return Course;

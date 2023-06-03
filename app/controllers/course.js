@@ -56,6 +56,25 @@ const updateCourse = async (req, res) => {
   }
 };
 
+const getCoursesByQuery = async (req, res) => {
+  try {
+    const query = req.query;
+
+    console.log("QQ", query);
+
+    const courses = await Course.findAll({
+      where: query,
+      include: { model: User, model: Enrollment, include: Exam },
+      // include: {model: User, model: Course, } [User, Course],
+      eager: true,
+    });
+
+    res.send(courses);
+  } catch (error) {
+    return res.status(500).json({ message: `Internal server error: ${error}` });
+  }
+};
+
 const deleteCourse = (req, res) => {
   console.log("DELETE USER");
 };
@@ -66,4 +85,5 @@ module.exports = {
   updateCourse,
   createCourse,
   deleteCourse,
+  getCoursesByQuery,
 };
