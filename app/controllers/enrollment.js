@@ -7,7 +7,10 @@ const Exam = db.exam;
 
 const getEnrollments = async (req, res) => {
   try {
-    const enrollment = await Enrollment.findAll({ include: [User, Course] });
+    const enrollment = await Enrollment.findAll({
+      include: [User, Course],
+      order: [["createdAt", "ASC"]],
+    });
 
     res.json(enrollment);
   } catch (error) {

@@ -6,7 +6,10 @@ const Answer = db.answer;
 
 const getQuestions = async (req, res) => {
   try {
-    const question = await Question.findAll({ include: [Exam, Answer] });
+    const question = await Question.findAll({
+      include: [Exam, Answer],
+      order: [["createdAt", "ASC"]],
+    });
 
     res.json(question);
   } catch (error) {

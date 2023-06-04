@@ -25,6 +25,7 @@ const getUserById = async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id, {
       include: [Role, Course, Enrollment],
+      order: [["createdAt", "ASC"]],
     });
     user == null
       ? res.status(404).json({ message: "User not found" })

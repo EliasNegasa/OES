@@ -8,7 +8,8 @@ const User = db.user;
 const getResults = async (req, res) => {
   try {
     const result = await Result.findAll({
-      include: { model: Exam, model: Enrollment, include: User },
+      include: [{ model: Exam }, { model: Enrollment, include: User }],
+      order: [["createdAt", "ASC"]],
     });
 
     res.json(result);
@@ -21,7 +22,7 @@ const getResults = async (req, res) => {
 const getResultById = async (req, res) => {
   try {
     const result = await Result.findByPk(req.params.id, {
-      include: { model: Exam, model: Enrollment, include: User },
+      include: [{ model: Exam }, { model: Enrollment, include: User }],
     });
     result == null
       ? res.status(404).json({ message: "Result not found" })

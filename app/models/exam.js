@@ -25,6 +25,9 @@ module.exports = (sequelize, Sequelize) => {
     status: {
       type: Sequelize.STRING,
     },
+    lecturer: {
+      type: Sequelize.STRING,
+    },
   });
 
   return Exam;
