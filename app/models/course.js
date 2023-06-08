@@ -17,7 +17,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     lecturer: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
     },
   });
 

@@ -124,9 +124,7 @@ const updateUser = async (req, res) => {
       });
     }
 
-    updated === 1
-      ? res.json({ message: "User updated successfully" })
-      : res.status(400).json({ message: "User not Found" });
+    updated === 1 ? res.json({ message: "User updated successfully" }) : "";
   } catch (error) {
     return res.status(500).json({ message: `Internal server error: ${error}` });
   }

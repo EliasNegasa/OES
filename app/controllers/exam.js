@@ -46,10 +46,18 @@ const createExam = async (req, res) => {
 const updateExam = async (req, res) => {
   try {
     const { id } = req.params;
+    const { questions } = req.body;
 
     const result = await Exam.update(req.body, {
       where: { id },
     });
+
+    if (questions && questions.length > 0) {
+      await Question.update(
+        { exam_id: id },
+        { where: { id: questions.map((question) => question.id) } }
+      );
+    }
 
     result[0] === 1
       ? res.json({ message: "Exam updated successfully" })

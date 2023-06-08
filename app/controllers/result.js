@@ -67,7 +67,7 @@ const getResultsByQuery = async (req, res) => {
 
     const result = await Result.findAll({
       where: query,
-      include: { model: Exam, model: Enrollment, include: User },
+      include: { model: Exam, include: [{ model: Enrollment, include: User }] },
       eager: true,
     });
 
