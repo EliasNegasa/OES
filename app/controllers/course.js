@@ -9,7 +9,7 @@ const getCourses = async (req, res) => {
   try {
     const course = await Course.findAll({
       include: [Enrollment, Exam],
-      order: [["createdAt", "ASC"]],
+      order: [["createdAt", "DESC"]],
     });
 
     res.json(course);

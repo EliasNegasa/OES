@@ -11,6 +11,9 @@ module.exports = (sequelize, Sequelize) => {
     remarks: {
       type: Sequelize.STRING,
     },
+    lecturer: {
+      type: Sequelize.INTEGER,
+    },
   });
   return Question;
 };

@@ -8,6 +8,9 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.BOOLEAN,
       allowNull: false,
     },
+    lecturer: {
+      type: Sequelize.INTEGER,
+    },
   });
 
   return Answer;

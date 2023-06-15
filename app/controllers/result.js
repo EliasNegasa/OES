@@ -4,11 +4,15 @@ const Result = db.result;
 const Enrollment = db.enrollment;
 const Exam = db.exam;
 const User = db.user;
+const Course = db.course;
 
 const getResults = async (req, res) => {
   try {
     const result = await Result.findAll({
-      include: [{ model: Exam }, { model: Enrollment, include: User }],
+      include: [
+        { model: Exam, include: Course },
+        { model: Enrollment, include: User },
+      ],
       order: [["createdAt", "ASC"]],
     });
 
@@ -22,7 +26,10 @@ const getResults = async (req, res) => {
 const getResultById = async (req, res) => {
   try {
     const result = await Result.findByPk(req.params.id, {
-      include: [{ model: Exam }, { model: Enrollment, include: User }],
+      include: [
+        { model: Exam, include: Course },
+        { model: Enrollment, include: User },
+      ],
     });
     result == null
       ? res.status(404).json({ message: "Result not found" })
