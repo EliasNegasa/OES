@@ -5,13 +5,14 @@ const Enrollment = db.enrollment;
 const Exam = db.exam;
 const User = db.user;
 const Course = db.course;
+const Role = db.role;
 
 const getResults = async (req, res) => {
   try {
     const result = await Result.findAll({
       include: [
         { model: Exam, include: Course },
-        { model: Enrollment, include: User },
+        { model: Enrollment, include: { model: User, include: Role } },
       ],
       order: [["createdAt", "ASC"]],
     });
@@ -28,7 +29,7 @@ const getResultById = async (req, res) => {
     const result = await Result.findByPk(req.params.id, {
       include: [
         { model: Exam, include: Course },
-        { model: Enrollment, include: User },
+        { model: Enrollment, include: { model: User, include: Role } },
       ],
     });
     result == null
